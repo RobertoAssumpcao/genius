@@ -16,7 +16,7 @@ int lista_botao[] = {botao_azul, botao_amarelo, botao_verde, botao_vermelho};
 // Inicia as portas dos Leds
 void setup_led()
 {
-  for (int i = 0; i <= sizeof(lista_led) / sizeof(int); i++)
+  for (int i = 0; i < sizeof(lista_led) / sizeof(int); i++)
   {
     pinMode(lista_led[i], OUTPUT);
   }
