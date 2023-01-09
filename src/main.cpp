@@ -21,23 +21,28 @@ void setup_led()
     pinMode(lista_led[i], OUTPUT);
   }
 }
+
+void pisca_led()
+{
+}
+
 // Inicia as portas dos botoes
 void setup_botao()
 {
   for (int i = 0; i < sizeof(lista_botao) / sizeof(int); i++)
   {
-    pinMode(lista_botao[i], OUTPUT);
+    pinMode(lista_botao[i], INPUT_PULLUP);
   }
 }
 
-void pisca_led()
+int status_botao()
 {
-  for (int i = 0; i < sizeof(lista_led) / sizeof(int); i++)
+  for (int i = 0; i < sizeof(lista_botao) / sizeof(int); i++)
   {
-    digitalWrite(lista_led[i], 1);
-    delay(1000);
-    digitalWrite(lista_led[i], 0);
-    delay(1000);
+    if (digitalRead(lista_botao[i]) == 0)
+    {
+      return lista_led[i];
+    }
   }
 }
 
@@ -53,4 +58,18 @@ void setup()
 void loop()
 {
   pisca_led();
+  int estado_botao = status_botao();
+  for (int i = 0; i < 4; i++)
+  {
+    if (estado_botao == lista_led[i])
+    {
+      digitalWrite(lista_led[0], 1);
+    }
+    else
+    {
+      digitalWrite(lista_led[0], 0);
+    }
+  }
+
+  Serial.println(estado_botao);
 }
