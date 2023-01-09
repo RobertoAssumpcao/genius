@@ -11,6 +11,15 @@ Repetir corretamente a sequência de cores, cada vez mais longa.
 - Azul
 - Amarelo
 
+# Visão circuito
+## Circuito
+![Circuito](/docs/Genius%20game.png "Circuito")
+
+## Esquemática
+![Esquemática](/docs/esquematico.png "Circuito")
+
+## Lista de componentes
+![Lista Componentes](/docs/lista_componentes.png "Lista Componentes")
 
 # Contribuição
 
