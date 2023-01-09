@@ -1,17 +1,11 @@
 #include <Arduino.h>
 
 // LED
-#define led_vermelho 5
-#define led_verde 4
-#define led_amarelo 3
-#define led_azul 2
-int lista_led[] = {led_azul, led_amarelo, led_verde, led_vermelho};
+// Azul, Amarelo, Verde, Vermelho.
+int lista_led[] = {2, 3, 4, 5};
 // Botao
-#define botao_vermelho 13
-#define botao_verde 12
-#define botao_amarelo 11
-#define botao_azul 10
-int lista_botao[] = {botao_azul, botao_amarelo, botao_verde, botao_vermelho};
+// Azul, Amarelo, Verde, Vermelho.
+int lista_botao[] = {10, 11, 12, 13};
 
 // Inicia as portas dos Leds
 void setup_led()
@@ -31,6 +25,7 @@ void setup_botao()
   }
 }
 
+// Verifica se o botão foi apertado ou se está em estado indefinido.
 int status_botao()
 {
   if (digitalRead(lista_botao[0]) == 0)
