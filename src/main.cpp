@@ -5,13 +5,12 @@
 #define led_verde 4
 #define led_amarelo 3
 #define led_azul 2
+int lista_led[] = {led_azul, led_amarelo, led_verde, led_vermelho};
 // Botao
 #define botao_vermelho 13
 #define botao_verde 12
 #define botao_amarelo 11
 #define botao_azul 10
-
-int lista_led[] = {led_azul, led_amarelo, led_verde, led_vermelho};
 int lista_botao[] = {botao_azul, botao_amarelo, botao_verde, botao_vermelho};
 
 // Inicia as portas dos Leds
