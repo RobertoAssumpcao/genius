@@ -24,7 +24,7 @@ void setup_led()
 // Inicia as portas dos botoes
 void setup_botao()
 {
-  for (int i = 0; i <= sizeof(lista_botao) / sizeof(int); i++)
+  for (int i = 0; i < sizeof(lista_botao) / sizeof(int); i++)
   {
     pinMode(lista_botao[i], OUTPUT);
   }
@@ -45,6 +45,9 @@ void setup()
 {
   Serial.begin(9600);
   setup_led();
+  Serial.println("Portas Leds configurada corretamente!");
+  setup_botao();
+  Serial.println("Portas botões configurado corretamente!");
 }
 
 void loop()
