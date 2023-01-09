@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+//Pontos / tamanho sequencia.
+int pontos = 0;
+
 // LED
 // Azul, Amarelo, Verde, Vermelho.
 const int lista_led[] = {2, 3, 4, 5};
@@ -74,6 +77,7 @@ void leds_aleatorio(int tamanho_sequencia)
 
 void setup()
 {
+  randomSeed(analogRead(0));
   Serial.begin(9600);
   setup_led();
   Serial.println("Portas Leds configurada corretamente!");
@@ -81,7 +85,7 @@ void setup()
   Serial.println("Portas botoes configurado corretamente!");
 }
 
-int pontos = 0;
+
 void loop()
 {
   leds_aleatorio(pontos);
