@@ -77,8 +77,7 @@ void leds_aleatorio(int tamanho_sequencia)
 
 void setup()
 {
-  randomSeed(analogRead(0));
-  Serial.begin(9600);
+  randomSeed(analogRead(0)); // Gerar leds aleatorio.
   setup_led();
   Serial.println("Portas Leds configurada corretamente!");
   setup_botao();
@@ -89,6 +88,6 @@ void setup()
 void loop()
 {
   leds_aleatorio(pontos);
-  int botao = status_botao();
-  Serial.write(botao);
+  //int botao = status_botao();
+  //Serial.write(botao);
 }
