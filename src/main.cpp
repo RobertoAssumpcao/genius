@@ -74,8 +74,8 @@ void jogada(int tamanho_sequencia)
       {
         sequencia_jogador[i] = botao_apertado;
         pisca_led(i);
-        estado_jogo++;
       }
+      estado_jogo++;
     }
     break;
   case 3:
