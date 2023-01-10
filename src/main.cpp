@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-//Pontos / tamanho sequencia.
+// Pontos / tamanho sequencia.
 int pontos = 0;
 
 // LED
@@ -66,9 +66,14 @@ int status_botao()
 void leds_aleatorio(int tamanho_sequencia)
 {
   int sequencia[tamanho_sequencia];
+  
   for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
   {
     sequencia[i] = random(lista_led[0], lista_led[3] + 1);
+  }
+
+  for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
+  {
     digitalWrite(sequencia[i], 1);
     delay(1000);
     digitalWrite(sequencia[i], 0);
@@ -84,10 +89,7 @@ void setup()
   Serial.println("Portas botoes configurado corretamente!");
 }
 
-
 void loop()
 {
   leds_aleatorio(pontos);
-  //int botao = status_botao();
-  //Serial.write(botao);
 }
