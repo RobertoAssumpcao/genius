@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 // Pontos / tamanho sequencia.
-int pontos = 0;
+unsigned int tamanho_sequencia = 0;
 
 // LED
 // Azul, Amarelo, Verde, Vermelho.
@@ -66,12 +66,14 @@ int status_botao()
 void leds_aleatorio(int tamanho_sequencia)
 {
   int sequencia[tamanho_sequencia];
-  
+
+  //Gerando sequencia.
   for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
   {
     sequencia[i] = random(lista_led[0], lista_led[3] + 1);
   }
 
+  //Mostrando sequencia ao jogador.
   for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
   {
     digitalWrite(sequencia[i], 1);
@@ -91,5 +93,6 @@ void setup()
 
 void loop()
 {
-  leds_aleatorio(pontos);
+  leds_aleatorio(tamanho_sequencia);
+
 }
