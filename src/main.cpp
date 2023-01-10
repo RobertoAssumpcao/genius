@@ -1,7 +1,10 @@
 #include <Arduino.h>
 
-// Pontos / tamanho sequencia.
+// Tamanho sequencia.
 unsigned int tamanho_sequencia = 0;
+
+// Estado do jogo.
+int estado_jogo = 1;
 
 // LED
 // Azul, Amarelo, Verde, Vermelho.
@@ -20,12 +23,11 @@ void setup_led()
 }
 
 // Piscar led conforme o click do botão.
-int pisca_led(int porta_led) // valor referente a posição no vetor.
+void pisca_led(int porta_led) // valor referente a posição no vetor.
 {
   digitalWrite(lista_led[porta_led], 1);
   delay(1000);
   digitalWrite(lista_led[porta_led], 0);
-  return porta_led;
 }
 
 // Inicia as portas dos botoes
@@ -37,48 +39,65 @@ void setup_botao()
   }
 }
 
-// Verifica se o botão foi apertado ou se está em estado indefinido.
-int status_botao()
+void jogada(int tamanho_sequencia)
 {
-  if (digitalRead(lista_botao[0]) == 0)
-  {
-    return pisca_led(0);
-  }
-  else if (digitalRead(lista_botao[1]) == 0)
-  {
-    return pisca_led(1);
-  }
-  else if (digitalRead(lista_botao[2]) == 0)
-  {
-    return pisca_led(2);
-  }
-  else if (digitalRead(lista_botao[3]) == 0)
-  {
-    return pisca_led(3);
-  }
-  else
-  {
-    return -1;
-  }
-}
+  int sequencia_partida[tamanho_sequencia];
+  int sequencia_jogador[tamanho_sequencia];
 
-// Pisca os leds de forma aleatoria criando a sequencia.
-void leds_aleatorio(int tamanho_sequencia)
-{
-  int sequencia[tamanho_sequencia];
-
-  //Gerando sequencia.
-  for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
+  switch (estado_jogo)
   {
-    sequencia[i] = random(lista_led[0], lista_led[3] + 1);
-  }
+  case 1:
+    // Gerando sequencia.
+    for (unsigned int i = 0; i <= sizeof(sequencia_partida) / sizeof(int); i++)
+    {
+      sequencia_partida[i] = random(lista_led[0], lista_led[3] + 1);
+    }
 
-  //Mostrando sequencia ao jogador.
-  for (unsigned int i = 0; i <= sizeof(sequencia) / sizeof(int); i++)
-  {
-    digitalWrite(sequencia[i], 1);
-    delay(1000);
-    digitalWrite(sequencia[i], 0);
+    // Mostrando sequencia ao jogador.
+    for (unsigned int i = 0; i <= sizeof(sequencia_partida) / sizeof(int); i++)
+    {
+      digitalWrite(sequencia_partida[i], 1);
+      delay(1000);
+      digitalWrite(sequencia_partida[i], 0);
+    }
+    estado_jogo++;
+    break;
+
+  // Verificando escolha jogador.
+  case 2:
+    // Verifica se o botão foi apertado ou se está em estado indefinido.
+    for (unsigned int i = 0; i <= sizeof(sequencia_jogador) / sizeof(int); i++)
+    {
+      // Verificando led escolhido pelo jogador e salvando na sequencia do jogador.
+      int botao_apertado = digitalRead(lista_botao[i]);
+      if (botao_apertado == 0)
+      {
+        sequencia_jogador[i] = botao_apertado;
+        pisca_led(i);
+        estado_jogo++;
+      }
+    }
+    break;
+  case 3:
+    for (unsigned int i = 0; i <= sizeof(sequencia_jogador) / sizeof(int); i++)
+    {
+      // Verificando se a sequencia do jogador é igual a sequencia da partida.
+      if (sequencia_partida[i] == sequencia_jogador[i])
+      {
+        pisca_led(2); // Piscando led verde mostrando que o jogador acertou.
+        tamanho_sequencia++;
+        estado_jogo = 1;
+      }
+      else
+      {
+        pisca_led(3); // Piscando led vermelho mostrando que o jogador errou.
+        tamanho_sequencia = 0;
+        estado_jogo = 1;
+      }
+    }
+    break;
+  default:
+    break;
   }
 }
 
@@ -93,6 +112,5 @@ void setup()
 
 void loop()
 {
-  leds_aleatorio(tamanho_sequencia);
-
+  jogada(tamanho_sequencia);
 }
