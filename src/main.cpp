@@ -50,25 +50,25 @@ int status_botao()
   if (digitalRead(lista_botao[0]) == 0)
   {
     pisca_led(0);
-    return 2;
+    return lista_led[0];
   }
 
   if (digitalRead(lista_botao[1]) == 0)
   {
     pisca_led(1);
-    return 3;
+    return lista_led[0];
   }
 
   if (digitalRead(lista_botao[2]) == 0)
   {
     pisca_led(2);
-    return 4;
+    return lista_led[0];
   }
 
   if (digitalRead(lista_botao[3]) == 0)
   {
     pisca_led(3);
-    return 5;
+    return lista_led[0];
   }
 
   return -1;
