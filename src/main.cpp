@@ -3,18 +3,15 @@
 // estado do jogo
 enum estados
 {
-  JOGADA,
-  RESPOSTA_JOGADOR,
-  GAME_OVER
+  JOGAR,
+  RESPOSTA_JOGADOR
 };
 
 // Estado atual do jogo.
-int estado = JOGADA;
-// Pontos do jogador.
-double pontos = 0.0;
+int estado = JOGAR;
 
 // Tamanho da sequencia de leds.
-unsigned int tamanho_sequencia = 1;
+int tamanho_sequencia = 1;
 
 // LED Azul, Amarelo, Verde, Vermelho.
 const int lista_led[] = {2, 3, 4, 5};
@@ -53,37 +50,38 @@ int status_botao()
   if (digitalRead(lista_botao[0]) == 0)
   {
     pisca_led(0);
-    return lista_led[0];
+    return 2;
   }
 
   if (digitalRead(lista_botao[1]) == 0)
   {
     pisca_led(1);
-    return lista_led[1];
+    return 3;
   }
 
   if (digitalRead(lista_botao[2]) == 0)
   {
     pisca_led(2);
-    return lista_led[2];
+    return 4;
   }
 
   if (digitalRead(lista_botao[3]) == 0)
   {
     pisca_led(3);
-    return lista_led[3];
+    return 5;
   }
 
   return -1;
 }
 
-void jogada(unsigned int tamanho_sequencia)
+void jogada(unsigned int tamanho_s)
 {
-  unsigned int sequencia_partida[tamanho_sequencia];
+  int sequencia_partida[tamanho_s];
+  int qtd_leds_respondidos = 0;
 
   switch (estado)
   {
-  case JOGADA:
+  case JOGAR:
 
     // Gerando sequencia.
     for (unsigned int i = 0; i < sizeof(sequencia_partida) / sizeof(int); i++)
@@ -103,20 +101,43 @@ void jogada(unsigned int tamanho_sequencia)
     break;
 
   case RESPOSTA_JOGADOR:
-    status_botao();
-    break;
+    // Pegando resposta jogador.
+    int resposta = status_botao();
+    Serial.println(resposta);
+    // Aguardando resposta do jogador.
+    if (resposta == -1)
+    {
+      return;
+    }
 
-  case GAME_OVER:
-    digitalWrite(lista_led[3], 1);
-    break;
-
-  default:
+    // Verificando repostasta jogador.
+    if (resposta == sequencia_partida[qtd_leds_respondidos])
+    {
+      digitalWrite(lista_led[2], 1);
+      delay(1000);
+      digitalWrite(lista_led[2], 0);
+      delay(3000);
+      qtd_leds_respondidos++;
+      tamanho_sequencia++;
+      estado = JOGAR;
+    }
+    else
+    {
+      tamanho_sequencia = 1;
+      qtd_leds_respondidos = 0;
+      digitalWrite(lista_led[3], 1);
+      delay(1000);
+      digitalWrite(lista_led[3], 0);
+      delay(3000);
+      estado = JOGAR;
+    }
     break;
   }
 }
 
 void setup()
-{
+{	
+  Serial.begin(9600);
   randomSeed(analogRead(0)); // Gerar leds aleatorio.
   setup_led();
   Serial.println("Portas Leds configurada!");
