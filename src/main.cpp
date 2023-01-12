@@ -1,11 +1,17 @@
 #include <Arduino.h>
 
 // estado do jogo
-enum estado
+enum estados
 {
-  PROXIMA_JOGADA,
-  AGUARDANDO_RESPOSTA,
+  JOGADA,
+  RESPOSTA_JOGADOR,
+  GAME_OVER
 };
+
+// Estado atual do jogo.
+int estado = JOGADA;
+// Pontos do jogador.
+double pontos = 0.0;
 
 // Tamanho da sequencia de leds.
 unsigned int tamanho_sequencia = 1;
@@ -15,13 +21,6 @@ const int lista_led[] = {2, 3, 4, 5};
 
 // Botao Azul, Amarelo, Verde, Vermelho.
 const int lista_botao[] = {10, 11, 12, 13};
-
-// Altera estado do jogo se necessario e retorna o estado atual.
-int estado_jogo()
-{
-  int estado = AGUARDANDO_RESPOSTA;
-  return estado;
-}
 
 // Inicia as portas dos Leds
 void setup_led()
@@ -82,26 +81,33 @@ void jogada(unsigned int tamanho_sequencia)
 {
   unsigned int sequencia_partida[tamanho_sequencia];
 
-  switch (estado_jogo())
+  switch (estado)
   {
-  case PROXIMA_JOGADA:
+  case JOGADA:
+
     // Gerando sequencia.
-    for (unsigned int i = 0; i <= sizeof(sequencia_partida) / sizeof(int); i++)
+    for (unsigned int i = 0; i < sizeof(sequencia_partida) / sizeof(int); i++)
     {
       sequencia_partida[i] = random(lista_led[0], lista_led[3] + 1);
     }
 
     // Mostrando sequencia ao jogador.
-    for (unsigned int i = 0; i <= sizeof(sequencia_partida) / sizeof(int); i++)
+    for (unsigned int i = 0; i < sizeof(sequencia_partida) / sizeof(int); i++)
     {
       digitalWrite(sequencia_partida[i], 1);
       delay(1000);
       digitalWrite(sequencia_partida[i], 0);
+      delay(1000);
     }
+    estado = RESPOSTA_JOGADOR;
     break;
 
-  case AGUARDANDO_RESPOSTA:
+  case RESPOSTA_JOGADOR:
     status_botao();
+    break;
+
+  case GAME_OVER:
+    digitalWrite(lista_led[3], 1);
     break;
 
   default:
@@ -120,5 +126,5 @@ void setup()
 
 void loop()
 {
-  status_botao();
+  jogada(tamanho_sequencia);
 }
