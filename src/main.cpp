@@ -13,6 +13,9 @@ int estado = JOGAR;
 // Tamanho da sequencia de leds.
 int tamanho_sequencia = 1;
 
+int qtd_leds_respondidos = 0;
+int tempo_led = 1000;
+
 // LED Azul, Amarelo, Verde, Vermelho.
 const int lista_led[] = {2, 3, 4, 5};
 
@@ -87,8 +90,6 @@ void jogada(unsigned int tamanho_s)
 {
   int sequencia_partida[tamanho_s];
   int sequencia_jogador[tamanho_s];
-  int qtd_leds_respondidos = 0;
-  int dificuldade = 1000;
 
   // Altera dificuldade.
   if (tamanho_sequencia % 5 == 0)
@@ -97,7 +98,7 @@ void jogada(unsigned int tamanho_s)
   }
   if (tamanho_sequencia % 10 == 0)
   {
-    dificuldade -= 50;
+    tempo_led -= 50;
   }
 
   switch (estado)
@@ -114,7 +115,7 @@ void jogada(unsigned int tamanho_s)
     for (unsigned int i = 0; i < sizeof(sequencia_partida) / sizeof(int); i++)
     {
       digitalWrite(sequencia_partida[i], 1);
-      delay(dificuldade);
+      delay(tempo_led);
       digitalWrite(sequencia_partida[i], 0);
       delay(1000);
     }
@@ -153,6 +154,7 @@ void jogada(unsigned int tamanho_s)
     else
     {
       tamanho_sequencia = 1;
+      tempo_led = 1000;
       qtd_leds_respondidos = 0;
       // Vermelho mostra que errou.
       digitalWrite(lista_led[3], 1);

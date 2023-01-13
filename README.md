@@ -14,12 +14,13 @@ Repetir corretamente a sequência de cores, cada vez mais longa.
 ## O jogador acertando a sequência o led verde irá piscar, se errar o led vermelho irá piscar.
 
 # Dificuldade
-Conforme o jogador for acertando a quantidade de sequência e o tempo que os leds ficarão acesso ficará cada vez mais difícil.
-
+- Conforme o jogador for acertando a quantidade de sequência e o tempo que os leds ficarão acesso ficará cada vez mais difícil.
+- Caso o jogador erre tanto o tempo do led acesso quanto o tamanho da sequencia irá voltar ao padrão.
 ## Níveis
 - A cada acerto, a sequência irá aumentar mais 1.
 - Se o tamanho da sequência chegar a um número multiplo de 5, o tamanho da sequência irá aumentar mais 2.
 - Se o tamanho da sequência chegar a um número multiplo de 10, o tempo que o led ficará acesso mostrando a sequência irá diminuir 50 milisegundos.
+
 
 # Visão circuito
 ## Circuito
