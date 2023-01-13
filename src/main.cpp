@@ -103,7 +103,7 @@ void jogada(unsigned int tamanho_s)
   case RESPOSTA_JOGADOR:
     // Pegando resposta jogador.
     int resposta = status_botao();
-    Serial.println(resposta);
+    delay(50); // delay para dar tempo de pegar o input botão
     // Aguardando resposta do jogador.
     if (resposta == -1)
     {
@@ -137,7 +137,6 @@ void jogada(unsigned int tamanho_s)
 
 void setup()
 {	
-  Serial.begin(9600);
   randomSeed(analogRead(0)); // Gerar leds aleatorio.
   setup_led();
   Serial.println("Portas Leds configurada!");
