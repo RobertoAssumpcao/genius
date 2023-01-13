@@ -103,7 +103,7 @@ void jogada(unsigned int tamanho_s)
   case RESPOSTA_JOGADOR:
     // Pegando resposta jogador.
     int resposta = status_botao();
-    delay(50); // delay para dar tempo de pegar o input botão
+    delay(100); // delay para dar tempo de pegar o input botão
     // Aguardando resposta do jogador.
     if (resposta == -1)
     {
