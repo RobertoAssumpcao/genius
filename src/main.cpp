@@ -28,14 +28,6 @@ void setup_led()
   }
 }
 
-// Piscar led conforme o click do botão.
-void pisca_led(int porta_led)
-{
-  digitalWrite(lista_led[porta_led], 1);
-  delay(500);
-  digitalWrite(lista_led[porta_led], 0);
-}
-
 // Inicia as portas dos botoes
 void setup_botao()
 {
@@ -45,29 +37,46 @@ void setup_botao()
   }
 }
 
+// Piscar led conforme o click do botãoe retorna o led.
 int status_botao()
 {
   if (digitalRead(lista_botao[0]) == 0)
   {
-    pisca_led(0);
+    digitalWrite(lista_led[0], 1);
+    delay(500);
+    digitalWrite(lista_led[0], 0);
+    delay(500);
+
     return lista_led[0];
   }
 
   if (digitalRead(lista_botao[1]) == 0)
   {
-    pisca_led(1);
+    digitalWrite(lista_led[1], 1);
+    delay(500);
+    digitalWrite(lista_led[1], 0);
+    delay(500);
+
     return lista_led[0];
   }
 
   if (digitalRead(lista_botao[2]) == 0)
   {
-    pisca_led(2);
+    digitalWrite(lista_led[2], 1);
+    delay(500);
+    digitalWrite(lista_led[2], 0);
+    delay(500);
+
     return lista_led[0];
   }
 
   if (digitalRead(lista_botao[3]) == 0)
   {
-    pisca_led(3);
+    digitalWrite(lista_led[3], 1);
+    delay(500);
+    digitalWrite(lista_led[3], 0);
+    delay(400);
+
     return lista_led[0];
   }
 
@@ -77,7 +86,19 @@ int status_botao()
 void jogada(unsigned int tamanho_s)
 {
   int sequencia_partida[tamanho_s];
+  int sequencia_jogador[tamanho_s];
   int qtd_leds_respondidos = 0;
+  int dificuldade = 1000;
+
+  // Altera dificuldade.
+  if (tamanho_sequencia % 5 == 0)
+  {
+    tamanho_sequencia += 2;
+  }
+  if (tamanho_sequencia % 10 == 0)
+  {
+    dificuldade -= 50;
+  }
 
   switch (estado)
   {
@@ -93,28 +114,36 @@ void jogada(unsigned int tamanho_s)
     for (unsigned int i = 0; i < sizeof(sequencia_partida) / sizeof(int); i++)
     {
       digitalWrite(sequencia_partida[i], 1);
-      delay(1000);
+      delay(dificuldade);
       digitalWrite(sequencia_partida[i], 0);
       delay(1000);
     }
     estado = RESPOSTA_JOGADOR;
+
     break;
 
   case RESPOSTA_JOGADOR:
     // Pegando resposta jogador.
     int resposta = status_botao();
-    delay(100); // delay para dar tempo de pegar o input botão
+
+    delay(100); // dar tempo de processar o input
+
     // Aguardando resposta do jogador.
     if (resposta == -1)
     {
       return;
     }
+    else
+    {
+      sequencia_jogador[qtd_leds_respondidos] = resposta;
+    }
 
     // Verificando repostasta jogador.
-    if (resposta == sequencia_partida[qtd_leds_respondidos])
+    if (sequencia_jogador[qtd_leds_respondidos] == sequencia_partida[qtd_leds_respondidos])
     {
+      // Verde mostra acerto.
       digitalWrite(lista_led[2], 1);
-      delay(1000);
+      delay(2000);
       digitalWrite(lista_led[2], 0);
       delay(3000);
       qtd_leds_respondidos++;
@@ -125,23 +154,23 @@ void jogada(unsigned int tamanho_s)
     {
       tamanho_sequencia = 1;
       qtd_leds_respondidos = 0;
+      // Vermelho mostra que errou.
       digitalWrite(lista_led[3], 1);
-      delay(1000);
+      delay(2000);
       digitalWrite(lista_led[3], 0);
       delay(3000);
       estado = JOGAR;
     }
+
     break;
   }
 }
 
 void setup()
-{	
+{
   randomSeed(analogRead(0)); // Gerar leds aleatorio.
   setup_led();
-  Serial.println("Portas Leds configurada!");
   setup_botao();
-  Serial.println("Portas botoes configurado!");
 }
 
 void loop()
